@@ -1,12 +1,18 @@
 import './style.css'
-import ContextMenu from './ContextMenu.ts';
+import ContextMenu from './Context/ContextMenu.ts';
 
 const contextMenu = new ContextMenu(document.body);
 
-const onBodyClick = (ev: MouseEvent) => {
+const onRightClick = (ev: MouseEvent) => {
 	ev.preventDefault();
-	contextMenu.open(ev.clientX, ev.clientY);
+	contextMenu.open(ev.clientX, ev.clientY,ev.target);
 };
 
-document.body.addEventListener('contextmenu', onBodyClick);
+const onLeftClick = (ev: MouseEvent) => {
+	ev.preventDefault();
+	contextMenu.close();
+};
+
+document.body.addEventListener('contextmenu', onRightClick);
+document.body.addEventListener('click',onLeftClick)
 
