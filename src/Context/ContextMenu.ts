@@ -1,11 +1,19 @@
-import CreateElement from './CreateElement'
+import CreateElement from './CreateElement';
 import DeleteElement from './DeleteElement';
+import ContextMenuOption from './ContextMenuOption';
+
+interface Coordinates {
+    x: number;
+    y: number;
+}
 
 class ContextMenu {
+    private readonly TEXT_ADD_BUTTON = 'Добавить картинку';
+    private readonly TEXT_DELETE_BUTTON = 'Удалить';
     private readonly root: HTMLElement;
     private readonly element: HTMLElement;
-    private readonly addWindowOption: HTMLElement;
-    private readonly deleteOption: HTMLElement;
+    private readonly elementOptionAdd: ContextMenuOption;
+    private readonly elementOptionDelete: ContextMenuOption;
 	
 
     constructor(rootElement: HTMLElement) {
@@ -13,60 +21,68 @@ class ContextMenu {
         this.element.className = 'context-menu';
         this.root = rootElement;
 
-        this.addWindowOption = document.createElement('div');
-        this.addWindowOption.textContent = 'Добавить картинку';
-        this.addWindowOption.addEventListener('click', () => {
-            const imageDisplayer = new CreateElement(this.root);
-        });
-        this.element.append(this.addWindowOption);
+        
+        this.elementOptionAdd = new ContextMenuOption(this.TEXT_ADD_BUTTON, this.onAddImage);
+        this.element.append(this.elementOptionAdd.getElement());
 
-
-        this.deleteOption = document.createElement('div');
-        this.deleteOption.textContent = 'Удалить';
-        this.deleteOption.addEventListener('click', () => {
-			const deleteImage = new DeleteElement(this.root)
-		});
-        this.element.append(this.deleteOption);
+        this.elementOptionDelete = new ContextMenuOption(this.TEXT_DELETE_BUTTON, this.onDeleteImage);
+        this.element.append(this.elementOptionDelete.getElement());
+        
     }
 
-    public open = (clientX: number, clientY: number, target: EventTarget | null) => {
+    public open = (coords: Coordinates, target: EventTarget | null) => {
+        
         if (target instanceof HTMLImageElement) {
-            this.deleteOption.style.display = 'block';
+            this.elementOptionDelete.style.display = 'block';//не нужно
         } else {
-            this.deleteOption.style.display = 'none';
+            this.elementOptionDelete.style.display = 'none';
         }
+        
         this.root.append(this.element);
+
+        this.findingCoord(coords);
+    }
+
+    public close = () => {
+        this.element.remove();
+        this.element.classList.remove('visible');
+    }
+
+    private findingCoord = (coords: Coordinates) => {
         const menuWidth = this.element.offsetWidth;
         const menuHeight = this.element.offsetHeight;
 
         const windowWidth = window.innerWidth;
         const windowHeight = window.innerHeight;
 
-        let top = clientY;
-        let left = clientX;
+        let left = coords.x;
+        let top = coords.y;
 
-        if (clientX + menuWidth > windowWidth) {
+        if (coords.x + menuWidth > windowWidth) {
             left -= menuWidth;
         }
 
-        if (clientY + menuHeight > windowHeight) {
+        if (coords.y + menuHeight > windowHeight) {
             top -= menuHeight;
         }
+        this.spavnContexMenu( { x: left, y: top });
+    }
+    private spavnContexMenu = (coords: Coordinates) =>{
+        const positionY = `${coords.y}px`
+        const positionX = `${coords.x}px`
 
-        this.element.style.top = `${top}px`;
-        this.element.style.left = `${left}px`;
-        this.element.classList.add('visible');
+        this.element.style.top = positionY;
+        this.element.style.left = positionX;
+    }
+    //допилить
     
+    private onAddedWindowClick = () => {
+        this.addElement();
+    }
+    private addElement = () => {
+
     }
 
-    public close = () => {
-        this.element.remove();
-        this.element.classList.remove('visible');
-
-    setTimeout(() => {
-        this.element.remove();
-    }, 200);
-    }
 }
 
 export default ContextMenu;
