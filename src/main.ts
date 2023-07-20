@@ -1,11 +1,11 @@
 import './style.css'
-import ContextMenu from './Context/ContextMenu.ts';
+import ContextMenu from './context/ContextMenu.ts';
 
 const contextMenu = new ContextMenu(document.body);
 
 const onRightClick = (ev: MouseEvent) => {
 	ev.preventDefault();
-	contextMenu.open({ x: ev.clientX, y: ev.clientY },ev.target);
+	contextMenu.open({ x: ev.clientX, y: ev.clientY });
 };
 
 const onLeftClick = (ev: MouseEvent) => {
