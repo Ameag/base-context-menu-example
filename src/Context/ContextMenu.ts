@@ -42,7 +42,7 @@ class ContextMenu {
 
 
         this.elementImageDelete = new ContextMenuOption(this.TEXT_DELETE_BUTTON);
-        this.elementImageDelete.addPostClickEvent(this.onDeleteImageClick);
+        this.elementImageDelete.addPostClickEvent(this.onDeleteElementClick);
         this.element.append(this.elementImageDelete.getElement());
         
     }
@@ -108,12 +108,12 @@ class ContextMenu {
         this.root.append(text);
     }
 
-    private onDeleteImageClick = () => {
-        this.deleteImageElement();
+    private onDeleteElementClick = () => {
+        this.deleteElement();
     }
 
-    private deleteImageElement = () => {
-
+    private deleteElement = () => {
+        this.elementStorage.deleteElement();
     }
 
 
