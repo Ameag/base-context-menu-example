@@ -1,8 +1,9 @@
 import PictureElement from './elements/PictureElement';
 import ContextMenuOption from './ContextMenuOption';
-import Coordinates from './Coordinates'
+import Coordinates from './interface/Coordinates'
 import TextElement from './elements/TextElement';
-import ElementStorage from './ElementStorage';
+import ElementStorage from './elements/ElementStorage';
+import Injector from './injector/Injector';
 
 
 
@@ -17,6 +18,7 @@ class ContextMenu {
     private readonly elementImageDelete: ContextMenuOption;
     private coords: Coordinates;
     private readonly elementStorage: ElementStorage;
+    private readonly injector: Injector;
 
 	
 
@@ -26,6 +28,7 @@ class ContextMenu {
         this.root = rootElement;
         this.coords = {x:0,y:0};
         this.elementStorage = new ElementStorage();
+        this.injector = new Injector();
 
 
         
@@ -45,11 +48,18 @@ class ContextMenu {
     }
 
 
-    public open = (coordsOutput: Coordinates) => {
+    public open = (coordsOutput: Coordinates,targetElement: HTMLElement) => {
         this.coords = coordsOutput;
         
         const position = this.findingCoord(coordsOutput);
         this.setPosition(position);
+
+        if (targetElement.tagName === 'IMG' || targetElement.classList.contains('text')) {
+            this.elementImageDelete.show();
+        } else {
+            this.elementImageDelete.hide();
+        }
+    
 
         this.root.append(this.element);
 
@@ -78,33 +88,24 @@ class ContextMenu {
         return {x,y}
     }
     private setPosition = (coords: Coordinates,element: HTMLElement = this.element) =>{
-        const positionY = `${coords.y}px`
-        const positionX = `${coords.x}px`
-
-        element.style.top = positionY;
-        element.style.left = positionX;
+        element.style.top = `${coords.y}px`;
+        element.style.left =`${coords.x}px`;
     }
     
     private onAddedImageClick = () => {
         this.addPictureElement();
     }
     private addPictureElement = () => {
-        const picture = new PictureElement(this.coords);
-        this.elementStorage.addElement(picture);
-        const image = picture.getElement();
+        const image = this.injector.injectImage(this.coords);
         this.root.append(image);
-        this.setPosition(this.coords,image) 
     }
 
     private onAddedTextClick = () => {
         this.addTextElement();
     }
     private addTextElement = () => {
-        const textElement = new TextElement(this.coords);
-        this.elementStorage.addElement(textElement);
-        const text = textElement.getElement();
+        const text = this.injector.injectText(this.coords);
         this.root.append(text);
-        this.setPosition(this.coords,text) 
     }
 
     private onDeleteImageClick = () => {

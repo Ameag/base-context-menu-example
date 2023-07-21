@@ -1,4 +1,4 @@
-import Element from './elements/Element'
+import Element from './Element'
 
 class ElementStorage {
 

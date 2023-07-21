@@ -1,4 +1,4 @@
-import Coordinates from "../Coordinates";
+import Coordinates from "../interface/Coordinates";
 import Element from "./Element";
 
 class PictureElement extends Element{

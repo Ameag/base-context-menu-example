@@ -1,4 +1,4 @@
-import Coordinates from "../Coordinates";
+import Coordinates from "../interface/Coordinates";
 
 class Element {
     private readonly coords:Coordinates
