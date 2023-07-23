@@ -51,17 +51,17 @@ class ContextMenu {
     public open = (coordsOutput: Coordinates,targetElement: HTMLElement) => {
         this.coords = coordsOutput;
         
-        const position = this.findingCoord(coordsOutput);
-        this.setPosition(position);
-
         if (targetElement.tagName === 'IMG' || targetElement.classList.contains('text')) {
             this.elementImageDelete.show();
         } else {
             this.elementImageDelete.hide();
         }
-    
 
         this.root.append(this.element);
+
+        const position = this.findingCoord(coordsOutput);
+        this.setPosition(position);
+
 
     }
 
@@ -109,12 +109,12 @@ class ContextMenu {
     }
 
     private onDeleteElementClick = () => {
-        this.deleteElement();
+        this.onDeleteImageClick();
     }
 
-    private deleteElement = () => {
-        this.elementStorage.deleteElement();
-    }
+    private onDeleteImageClick = () => {
+    this.elementStorage.deleteElementAt(this.coords);
+}
 
 
 }

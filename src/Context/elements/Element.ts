@@ -16,8 +16,8 @@ class Element {
         this.element.remove();
     }
 
-    public getCoords = ():Coordinates =>  {
-        return this.coords;
+    public getRect(): DOMRect {
+        return this.element.getBoundingClientRect();
     }
 
 }
