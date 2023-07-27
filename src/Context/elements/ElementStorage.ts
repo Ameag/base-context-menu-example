@@ -13,7 +13,7 @@ class ElementStorage {
         this.storageElement.push(element)
     }
 
-    public deleteElementAt(coords: Coordinates) {
+    public deleteElementAt = (coords: Coordinates) => {
         for (let i = 0; i < this.storageElement.length; i++) {
             const element = this.storageElement[i];
             const rect = element.getRect();
@@ -24,6 +24,19 @@ class ElementStorage {
             }
         }
     }
+
+    public Find = (coords: Coordinates):Element | undefined => {
+        for (let i = 0; i < this.storageElement.length; i++) {
+            const element = this.storageElement[i];
+            const rect = element.getRect();
+            if (coords.x >= rect.left && coords.x <= rect.right && coords.y >= rect.top && coords.y <= rect.bottom) {
+                return element
+            }
+            
+        }
+        return undefined;
+    }
+
 }
 
 

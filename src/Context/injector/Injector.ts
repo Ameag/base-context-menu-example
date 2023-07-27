@@ -3,14 +3,20 @@ import Coordinates from "../interface/Coordinates";
 import Fabric from "./fabric/Fabric";
 
 class Injector {
-    protected readonly elementStorage = new ElementStorage();
+    private readonly elementStorage: ElementStorage;
     protected readonly fabric = new Fabric();
+
+    constructor (elementStorage: ElementStorage) {
+        this.elementStorage = elementStorage;
+    }
+
+   
 
     public injectImage = (coords: Coordinates): HTMLElement => {
         const picture = this.fabric.imageFabric(coords);
         this.elementStorage.addElement(picture);
         const image = picture.getElement();
-        this.setPosition(coords,image) 
+        picture.setPosition(coords,image);
         return image;
     }
 
@@ -18,14 +24,10 @@ class Injector {
         const textElement = this.fabric.textFabric(coords);
         this.elementStorage.addElement(textElement);
         const text = textElement.getElement();
-        this.setPosition(coords,text) 
+        textElement.setPosition(coords,text);
         return text;
     }
 
-    private setPosition = (coords: Coordinates,element: HTMLElement ) =>{
-        element.style.top = `${coords.y}px`;
-        element.style.left =`${coords.x}px`;
-    }
 }
 
 export default Injector;

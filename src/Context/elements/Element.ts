@@ -1,11 +1,8 @@
 import Coordinates from "../interface/Coordinates";
 
 class Element {
-    private readonly coords:Coordinates
     protected element: HTMLElement
-
-    constructor(coordsOutput: Coordinates) {
-        this.coords = coordsOutput
+    constructor() {
         this.element = document.createElement('div')
     }
     public getElement(): HTMLElement {
@@ -18,6 +15,11 @@ class Element {
 
     public getRect(): DOMRect {
         return this.element.getBoundingClientRect();
+    }
+
+    public setPosition = (coords: Coordinates,element: HTMLElement ) =>{
+        element.style.top = `${coords.y}px`;
+        element.style.left =`${coords.x}px`;
     }
 
 }

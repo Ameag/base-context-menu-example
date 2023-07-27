@@ -3,7 +3,7 @@ import Element from "./Element";
 
 class TextElement extends Element {
     constructor(coordsOutput: Coordinates) {
-        super(coordsOutput);
+        super();
         this.element.textContent = 'Ваш текст здесь';
         this.element.className = 'text';
         this.element.style.position = 'absolute';

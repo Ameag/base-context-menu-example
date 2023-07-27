@@ -1,7 +1,5 @@
-import PictureElement from './elements/PictureElement';
 import ContextMenuOption from './ContextMenuOption';
 import Coordinates from './interface/Coordinates'
-import TextElement from './elements/TextElement';
 import ElementStorage from './elements/ElementStorage';
 import Injector from './injector/Injector';
 
@@ -15,20 +13,20 @@ class ContextMenu {
     private readonly element: HTMLElement;
     private readonly elementImageAdd: ContextMenuOption;
     private readonly elementTextAdd: ContextMenuOption;
-    private readonly elementImageDelete: ContextMenuOption;
+    private readonly elementDelete: ContextMenuOption;
     private coords: Coordinates;
     private readonly elementStorage: ElementStorage;
     private readonly injector: Injector;
 
 	
 
-    constructor(rootElement: HTMLElement) {
+    constructor(rootElement: HTMLElement, elementStorage: ElementStorage, injector: Injector) {
         this.element = document.createElement('div');
         this.element.className = 'context-menu';
         this.root = rootElement;
         this.coords = {x:0,y:0};
-        this.elementStorage = new ElementStorage();
-        this.injector = new Injector();
+        this.elementStorage = elementStorage;
+        this.injector = injector;
 
 
         
@@ -41,9 +39,9 @@ class ContextMenu {
         this.element.append(this.elementTextAdd.getElement());
 
 
-        this.elementImageDelete = new ContextMenuOption(this.TEXT_DELETE_BUTTON);
-        this.elementImageDelete.addPostClickEvent(this.onDeleteElementClick);
-        this.element.append(this.elementImageDelete.getElement());
+        this.elementDelete = new ContextMenuOption(this.TEXT_DELETE_BUTTON);
+        this.elementDelete.addPostClickEvent(this.onDeleteElementClick);
+        this.element.append(this.elementDelete.getElement());
         
     }
 
@@ -52,15 +50,16 @@ class ContextMenu {
         this.coords = coordsOutput;
         
         if (targetElement.tagName === 'IMG' || targetElement.classList.contains('text')) {
-            this.elementImageDelete.show();
+            this.elementDelete.show();
         } else {
-            this.elementImageDelete.hide();
+            this.elementDelete.hide();
         }
 
         this.root.append(this.element);
 
         const position = this.findingCoord(coordsOutput);
-        this.setPosition(position);
+
+        this.setPositionMenu(position);
 
 
     }
@@ -87,7 +86,7 @@ class ContextMenu {
         }
         return {x,y}
     }
-    private setPosition = (coords: Coordinates,element: HTMLElement = this.element) =>{
+    private setPositionMenu = (coords: Coordinates,element: HTMLElement = this.element) =>{
         element.style.top = `${coords.y}px`;
         element.style.left =`${coords.x}px`;
     }
@@ -109,10 +108,10 @@ class ContextMenu {
     }
 
     private onDeleteElementClick = () => {
-        this.onDeleteImageClick();
+        this.onDeleteClick();
     }
 
-    private onDeleteImageClick = () => {
+    private onDeleteClick = () => {
     this.elementStorage.deleteElementAt(this.coords);
 }
 
