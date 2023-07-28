@@ -1,30 +1,41 @@
 import ElementStorage from "../elements/ElementStorage";
 import Coordinates from "../interface/Coordinates";
-import Fabric from "./fabric/Fabric";
+import Fabric, { TypeElement } from "./fabric/Fabric";
 
+/**
+ * класс предназначеный для настройки создаваемых элементов, сами элементы создаются в @class Fabric
+ */
 class Injector {
-    private readonly elementStorage: ElementStorage;
+    private readonly storageElement: ElementStorage;
     protected readonly fabric = new Fabric();
 
     constructor (elementStorage: ElementStorage) {
-        this.elementStorage = elementStorage;
+        this.storageElement = elementStorage;
     }
 
    
-
+    /**
+     * cоздание элемента picture в @class Fabric, его настройка и добавление в storageElement 
+     * @param coords кординаты мыши на экране
+     * @returns возврат в класс ContextMenu
+     */
     public injectImage = (coords: Coordinates): HTMLElement => {
-        const picture = this.fabric.imageFabric(coords);
-        this.elementStorage.addElement(picture);
+        const picture = this.fabric.createElement(TypeElement.IMAGE_ELEMENT);
+        this.storageElement.addElement(picture);
         const image = picture.getElement();
-        picture.setPosition(coords,image);
+        picture.setPosition(coords);
         return image;
     }
-
+    /**
+     * cоздание элемента text в @class Fabric, его настройка и добавление в storageElement 
+     * @param coords кординаты мыши на экране
+     * @returns возврат в класс ContextMenu
+     */
     public injectText = (coords: Coordinates):HTMLElement  => {
-        const textElement = this.fabric.textFabric(coords);
-        this.elementStorage.addElement(textElement);
+        const textElement = this.fabric.createElement(TypeElement.TEXT_ELEMENT);
+        this.storageElement.addElement(textElement);
         const text = textElement.getElement();
-        textElement.setPosition(coords,text);
+        textElement.setPosition(coords);
         return text;
     }
 

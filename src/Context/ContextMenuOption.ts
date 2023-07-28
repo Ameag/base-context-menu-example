@@ -1,3 +1,7 @@
+/**
+ * Класс помощник для @class ContextMenu, он создает кнопки которые мы укажем в @class ContextMenu и вешает на них @event addEventListener.
+ *  Далее из @class ContextMenu в него приходят методы на эти кнопки и он их выполняет. 
+ */
 class ContextMenuOption {
     private readonly element: HTMLElement
     private readonly postClickEvents: (() => void)[];
@@ -19,6 +23,9 @@ class ContextMenuOption {
         });
     }
 
+    /**
+     * @function show и @function hide нужны для того что бы скрыть кнопку удаления
+     */
     public show() {
         this.element.style.display = 'block';
     }

@@ -30,7 +30,7 @@ const onMouseDown = (ev: MouseEvent) => {
 
 const onMouseUp = (ev: MouseEvent) => {
 	ev.preventDefault();
-	elementData.End();
+	elementData.stop();
 };
 
 
@@ -38,10 +38,8 @@ const onMouseMove = (ev: MouseEvent) => {
 	ev.preventDefault();
 	const coords = { x: ev.clientX, y: ev.clientY }
 	elementData.setCoordinates(coords);
-	elementData.callMoveElement();
+	elementData.moveElement();
 };
-
-
 
 
 document.body.addEventListener('contextmenu', onRightClick);

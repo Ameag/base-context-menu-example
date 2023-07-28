@@ -1,17 +1,22 @@
 import PictureElement from "../../elements/PictureElement";
 import TextElement from "../../elements/TextElement";
-import Coordinates from "../../interface/Coordinates";
+
+export enum TypeElement{
+    IMAGE_ELEMENT,
+    TEXT_ELEMENT,
+}
 
 class Fabric {
     
-    public imageFabric = (coords: Coordinates):PictureElement => {
-        const picture = new PictureElement(coords);
-        return picture;
-    }
-
-    public textFabric = (coords: Coordinates): TextElement => {
-        const text = new TextElement(coords);
-        return text;
+    public createElement = (typeElement:TypeElement ) => {
+        switch(typeElement){
+            case TypeElement.IMAGE_ELEMENT:{
+                return new PictureElement();
+            }
+            case TypeElement.TEXT_ELEMENT:{
+                return new TextElement();;
+            }
+        }
     }
 }
 

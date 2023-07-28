@@ -1,7 +1,8 @@
 import Coordinates from "../interface/Coordinates";
 
 class Element {
-    protected element: HTMLElement
+    protected element: HTMLElement;
+
     constructor() {
         this.element = document.createElement('div')
     }
@@ -17,9 +18,9 @@ class Element {
         return this.element.getBoundingClientRect();
     }
 
-    public setPosition = (coords: Coordinates,element: HTMLElement ) =>{
-        element.style.top = `${coords.y}px`;
-        element.style.left =`${coords.x}px`;
+    public setPosition = (coords: Coordinates) =>{
+        this.element.style.top = `${coords.y}px`;
+        this.element.style.left =`${coords.x}px`;
     }
 
 }

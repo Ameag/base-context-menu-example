@@ -1,18 +1,20 @@
 import Element from '../context/elements/Element'
 import Coordinates from '../context/interface/Coordinates';
-import ElementMover from './ElementMover ';
-class ElementData {
-        private  element: Element | null;
-        private coord : Coordinates | null;
-        private readonly elementMover: ElementMover;
-        private offset: Coordinates;
 
-        constructor () {
-            this.element = null;
-            this.coord = null;
-            this.elementMover = new ElementMover();
-            this.offset = { x: 0, y: 0 };
-        }
+/**
+ * Класс отвечающий за перетаскивания элемента по экрану,
+ * сохраняет в себе элемент который будет перемещатся и координаты по которым он будет это делать.
+ */
+class ElementData {
+    private element: Element | null;
+    private coords : Coordinates | null;
+    private offset: Coordinates;
+
+    constructor () {
+        this.element = null;
+        this.coords = null;
+        this.offset = { x: 0, y: 0 };
+    }
 
     public setElement = (elements: Element,coords: Coordinates) => {
         this.element = elements
@@ -22,18 +24,21 @@ class ElementData {
     }
 
     public setCoordinates = (coordsOutput: Coordinates) => {
-        this.coord = {
+        this.coords = {
             x: coordsOutput.x - this.offset.x,
             y: coordsOutput.y - this.offset.y,
         };
     }
-    public End = () => { 
+    /*метод вызываемый при окончани перемещения элемента, очищает this.element,
+     что бы элемент оставался на своем месте и не следовал за курсором
+     */
+    public stop = () => { 
         this.element = null;
     }
 
-    public callMoveElement = () => {
-        if (this.coord&&this.element) {
-            this.elementMover.moveElement(this.coord,this.element);
+    public moveElement = () => {
+        if (this.coords&&this.element) {
+            this.element.setPosition(this.coords)
         }
     }
 }

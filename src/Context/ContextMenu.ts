@@ -4,7 +4,12 @@ import ElementStorage from './elements/ElementStorage';
 import Injector from './injector/Injector';
 
 
-
+/**
+ * Главный класс контексного меню отвечающий за следующие: 
+ * 1. Появление в нужных координатах
+ * 2. Закрытие контексного меню нажатием на ЛКМ
+ * 3. Создание кнопок и их функционал
+ */
 class ContextMenu {
     private readonly TEXT_ADD_IMAGE_BUTTON = 'Добавить картинку';
     private readonly TEXT_DELETE_BUTTON = 'Удалить';
@@ -29,7 +34,7 @@ class ContextMenu {
         this.injector = injector;
 
 
-        
+        // Добавление кнопок в контексное меню
         this.elementImageAdd = new ContextMenuOption(this.TEXT_ADD_IMAGE_BUTTON);
         this.elementImageAdd.addPostClickEvent(this.onAddedImageClick);
         this.element.append(this.elementImageAdd.getElement());
@@ -45,10 +50,14 @@ class ContextMenu {
         
     }
 
-
+    //метод отвечающий за появление контекстного меню
     public open = (coordsOutput: Coordinates,targetElement: HTMLElement) => {
         this.coords = coordsOutput;
-        
+        /**
+         * Проверка для кнопки удаления, если вызов контекстного меню произошел не на созданном элементе,
+         * то кнопка удалить скрывается
+         * @function show и @function hide находятся в @class ContextMenuOption  
+         */
         if (targetElement.tagName === 'IMG' || targetElement.classList.contains('text')) {
             this.elementDelete.show();
         } else {
@@ -57,7 +66,7 @@ class ContextMenu {
 
         this.root.append(this.element);
 
-        const position = this.findingCoord(coordsOutput);
+        const position = this.findingCoords(coordsOutput);
 
         this.setPositionMenu(position);
 
@@ -68,7 +77,7 @@ class ContextMenu {
         this.element.remove();
     }
 
-    private findingCoord = (coords: Coordinates):Coordinates =>  {
+    private findingCoords = (coords: Coordinates):Coordinates =>  {
         const menuWidth = this.element.offsetWidth;
         const menuHeight = this.element.offsetHeight;
 
@@ -91,29 +100,36 @@ class ContextMenu {
         element.style.left =`${coords.x}px`;
     }
     
+
+    /**
+     * группа методов отвечающая за функционал кнопок: добавление элементов и их удаление
+     */
     private onAddedImageClick = () => {
         this.addPictureElement();
-    }
-    private addPictureElement = () => {
-        const image = this.injector.injectImage(this.coords);
-        this.root.append(image);
     }
 
     private onAddedTextClick = () => {
         this.addTextElement();
-    }
-    private addTextElement = () => {
-        const text = this.injector.injectText(this.coords);
-        this.root.append(text);
     }
 
     private onDeleteElementClick = () => {
         this.onDeleteClick();
     }
 
+
+    private addPictureElement = () => {
+        const image = this.injector.injectImage(this.coords);
+        this.root.append(image);
+    }
+
+    private addTextElement = () => {
+        const text = this.injector.injectText(this.coords);
+        this.root.append(text);
+    }
+
     private onDeleteClick = () => {
-    this.elementStorage.deleteElementAt(this.coords);
-}
+        this.elementStorage.deleteElementAt(this.coords);
+    }
 
 
 }
