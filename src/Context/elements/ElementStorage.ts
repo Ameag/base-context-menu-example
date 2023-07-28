@@ -25,7 +25,7 @@ class ElementStorage {
         }
     }
 
-    public Find = (coords: Coordinates):Element | undefined => {
+    public findElement = (coords: Coordinates):Element | undefined => {
         for (let i = 0; i < this.storageElement.length; i++) {
             const element = this.storageElement[i];
             const rect = element.getRect();

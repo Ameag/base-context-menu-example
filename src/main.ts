@@ -2,7 +2,7 @@ import './style.css'
 import ContextMenu from './context/ContextMenu.ts';
 import ElementStorage from './context/elements/ElementStorage.ts';
 import Injector from './context/injector/Injector.ts';
-import ElementData from './moveElement/elementData.ts';
+import ElementData from './moveElement/ElementData.ts';
 const elementStorage = new ElementStorage();
 const injector = new Injector(elementStorage);
 const contextMenu = new ContextMenu(document.body,elementStorage,injector);
@@ -21,7 +21,7 @@ const onLeftClick = (ev: MouseEvent) => {
 
 const onMouseDown = (ev: MouseEvent) => {
 	const coords = { x: ev.clientX, y: ev.clientY }
-	const element = elementStorage.Find(coords);
+	const element = elementStorage.findElement(coords);
 	if (element !== undefined) {
 		elementData.setElement(element,coords);
 	}
